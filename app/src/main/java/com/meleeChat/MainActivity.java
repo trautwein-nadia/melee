@@ -13,13 +13,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.meleeChat.message.SecureRandomString;
+
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = "MAIN_ACTIVITY";
     private double prevAcc = (double) 1e10;
     private double lat;
     private double lon;
     private long prevAccTime = 0;
-    //SharedPreferences settings;
     Location prevLoc;
 
 

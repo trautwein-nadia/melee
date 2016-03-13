@@ -1,6 +1,5 @@
 package com.meleeChat;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -12,6 +11,10 @@ import android.util.Log;
 import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
+
+import com.meleeChat.message.MessageService;
+import com.meleeChat.message.Messages;
+import com.meleeChat.message.SecureRandomString;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -30,9 +33,6 @@ import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 /**
  * Created by nadia on 3/12/16.
@@ -204,22 +204,6 @@ public class TOLogin extends AppCompatActivity {
         protected void onPostExecute(String message) {
             //process message
         }
-    }
-
-
-    public interface MessageService {
-        @GET("post_message")
-        Call<Messages> post_Message(@Query("lat") float lat,
-                                    @Query("lng") float lng,
-                                    @Query("nickname") String nickname,
-                                    @Query("user_id") String user_id,
-                                    @Query("message") String message,
-                                    @Query("message_id") String message_id);
-
-        @GET("get_messages")
-        Call<Messages> get_Messages(@Query("lat") float lat,
-                                    @Query("lng") float lng,
-                                    @Query("user_id") String user_id);
     }
 
 }

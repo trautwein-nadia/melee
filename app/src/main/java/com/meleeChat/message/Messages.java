@@ -1,4 +1,4 @@
-package com.meleeChat;
+package com.meleeChat.message;
 
 
 import java.util.ArrayList;

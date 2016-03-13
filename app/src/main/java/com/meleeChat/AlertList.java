@@ -14,6 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.meleeChat.message.MessageService;
+import com.meleeChat.message.Messages;
+import com.meleeChat.message.ResultList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +28,11 @@ import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
 
 /**
  * Created by nadia on 2/19/16.
  */
-public class PlayerList extends AppCompatActivity {
+public class AlertList extends AppCompatActivity {
     private SharedPreferences settings;
     private static final String LOG_TAG = "CHAT_ACTIVITY";
     private String user_id;
@@ -117,22 +119,6 @@ public class PlayerList extends AppCompatActivity {
         aa.notifyDataSetChanged();
     }
 
-    public interface MessageService {
-        @GET("post_message")
-        Call<Messages> post_Message(@Query("lat") float lat,
-                                    @Query("lng") float lng,
-                                    @Query("nickname") String nickname,
-                                    @Query("user_id") String user_id,
-                                    @Query("message") String message,
-                                    @Query("message_id") String message_id);
-
-        @GET("get_messages")
-        Call<Messages> get_Messages(@Query("lat") float lat,
-                                    @Query("lng") float lng,
-                                    @Query("user_id") String user_id);
-    }
-
-
     @Override
     protected void onResume() {
         getSupportActionBar().setTitle("Choose a player to notify");
@@ -197,4 +183,4 @@ public class PlayerList extends AppCompatActivity {
         }//end getView
 
     } //end MyAdapter class
-}//end PlayerList class
+}//end AlertList class

@@ -38,7 +38,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateHidden|adjustPan">
         </activity>
-        <activity android:name=".PlayerList"
+        <activity android:name=".AlertList"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateHidden|adjustPan">
         </activity>

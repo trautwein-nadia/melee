@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-/**
- * Created by nadia on 3/12/16.
- */
+
 public class Menu extends AppCompatActivity{
     Bundle b;
 
@@ -24,7 +22,7 @@ public class Menu extends AppCompatActivity{
 
 
     public void alertPlayersButton(View v) {
-        Intent intent = new Intent(this, PlayerList.class);
+        Intent intent = new Intent(this, AlertList.class);
 
         intent.putExtras(b); //pass lat and lon along
 
