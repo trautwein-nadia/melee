@@ -2,26 +2,19 @@ package com.meleeChat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.meleeChat.message.MessageService;
 import com.meleeChat.message.Messages;
+import com.meleeChat.message.ResultList;
 import com.meleeChat.message.SecureRandomString;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -30,39 +23,25 @@ import retrofit2.Callback;
 import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
 
-/**
- * Created by nadia on 3/12/16.
- */
 public class PlayerLogin extends AppCompatActivity {
     private static final String LOG_TAG = "PLAYER_LOGIN";
     private String user_id;
     private float lat;
     private float lon;
     private SharedPreferences settings;
-    /*
-
-
+    private List<ResultList> responses;
+    private boolean taken = false;
 
     private String username;
-    private String APIkey;
-    private String domain;
 
 
     private boolean getLoginInfo() {
         EditText editText = (EditText) findViewById(R.id.username);
         username = editText.getText().toString();
 
-        editText = (EditText) findViewById(R.id.key);
-        APIkey = editText.getText().toString();
-
-        editText = (EditText) findViewById(R.id.to_domain);
-        domain = editText.getText().toString();
-
         //or do you bounds check with ""?
-        if (username == null || APIkey == null || domain == null) {
+        if (username == null) {
             return false;
         }
         return true;
@@ -70,11 +49,31 @@ public class PlayerLogin extends AppCompatActivity {
 
     public void playerLogin(View v) {
         if (getLoginInfo()) {
-            //get messages
-            //parse
-            //if domain dne then send message
-            domain = "!DOMAIN!" + domain;
-            sendMessage(domain);
+            if (responses == null) {
+                return;
+                //add message
+            }
+            //parse responses so that username isnt taken
+            for (int i = (responses.size() - 1); i >= 0; i--) {
+                String tag = responses.get(i).nickname;
+                String message = responses.get(i).message;
+                char c = message.charAt(0);
+                Log.i(LOG_TAG, "tag list: " + tag);
+                if (c == '!' && message.equals("!LOGIN!" + tag) && tag.equals(username)) {
+                    //show something saying username taken
+                    Log.i(LOG_TAG, tag + " is already taken!");
+                    return;
+                }
+            }
+
+            postMessage();
+
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+            //username = settings.getString("username", null);
+            SharedPreferences.Editor e = settings.edit();
+            e.putString("username", username);
+            e.commit();
+
             Intent intent = new Intent(this, Menu.class);
 
             Bundle b = new Bundle();
@@ -86,7 +85,55 @@ public class PlayerLogin extends AppCompatActivity {
         }
     }
 
-    */
+
+    public void postMessage() {
+        //Magic HTTP stuff
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://luca-teaching.appspot.com/localmessages/default/")
+                .addConverterFactory(GsonConverterFactory.create())    //parse Gson string
+                .client(httpClient)    //add logging
+                .build();
+
+        MessageService service = retrofit.create(MessageService.class);
+
+        SecureRandomString srs = new SecureRandomString();
+        String message_id = srs.nextString();
+
+        String message = "!LOGIN!" + username;
+        Call<Messages> queryResponseCall =
+                service.post_Message(lat, lon, username, user_id, message, message_id);
+
+
+        //Call retrofit asynchronously
+        queryResponseCall.enqueue(new Callback<Messages>() {
+            @Override
+            public void onResponse(Response<Messages> response) {
+                Log.i(LOG_TAG, "Code is: " + response.code());
+                if ((response.body().result.equals("ok") && response.code() == 200)) {
+                    Log.i(LOG_TAG, "The result is: " + response.body().result);
+
+                    responses = response.body().resultList;
+
+                }
+                else {
+                    Log.i(LOG_TAG, "Code is: " + response.code());
+                    //toast with error
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                // Log error here since request failed
+                //toast error
+            }
+        });
+    }
 
     public void getMessages() {
         //Magic HTTP stuff
@@ -107,7 +154,6 @@ public class PlayerLogin extends AppCompatActivity {
             SecureRandomString srs = new SecureRandomString();
             String message_id = srs.nextString();
 
-            //username = "!TO!" + username;
             Call<Messages> queryResponseCall =
                     service.get_Messages(lat, lon, user_id);
 
@@ -116,9 +162,12 @@ public class PlayerLogin extends AppCompatActivity {
             queryResponseCall.enqueue(new Callback<Messages>() {
                 @Override
                 public void onResponse(Response<Messages> response) {
+                    Log.i(LOG_TAG, "Code is: " + response.code());
                     if ((response.body().result.equals("ok") && response.code() == 200)) {
-                        Log.i(LOG_TAG, "Code is: " + response.code());
                         Log.i(LOG_TAG, "The result is: " + response.body().result);
+
+                        responses = response.body().resultList;
+
                     }
                     else {
                         Log.i(LOG_TAG, "Code is: " + response.code());
@@ -136,6 +185,7 @@ public class PlayerLogin extends AppCompatActivity {
     @Override
     protected void onResume() {
         getSupportActionBar().setTitle("Competitor Login");
+        getMessages();
         super.onResume();
     }
 
@@ -151,61 +201,9 @@ public class PlayerLogin extends AppCompatActivity {
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         user_id = settings.getString("user_id", user_id);
 
+
+
         Log.i(LOG_TAG, "LAT: " + lat + " LON: " + lon + "user_id: " + user_id);
-
-        //new Feedback().execute("https://api.challonge.com/v1/tournaments.json");
     }
-
-    /*
-    private class Feedback extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... urls) {
-            HttpURLConnection urlConnection;
-            String userpass = username + ":" + APIkey;
-            Log.i(LOG_TAG,"USERPASS: " + userpass);
-            String result = "";
-            // do above Server call here
-            try
-            {
-                URL url = new URL("https://api.challonge.com/v1/tournaments.json?subdomain=smashing121");
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestProperty("Authorization", "Basic " + new String(Base64.encode(userpass.getBytes(), Base64.NO_WRAP)));
-                BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                Log.i("Code is:", "" + urlConnection.getResponseCode());
-                if (in != null)
-                {
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
-                    String line = bufferedReader.readLine();
-                    Log.i("Information is", "" + line);
-
-                    while ((line = bufferedReader.readLine()) != null) {
-                        result += line;
-                    }
-
-                }
-
-                in.close();
-                urlConnection.disconnect();
-
-                return result;
-            }
-            catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            return "some message";
-        }
-
-        @Override
-        protected void onPostExecute(String message) {
-            //process message
-        }
-    }
-
-    */
 
 }

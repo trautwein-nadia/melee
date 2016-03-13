@@ -36,6 +36,7 @@
         android:enabled="true"
         android:text="@string/login"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="playerLogin" />
 
 </RelativeLayout>

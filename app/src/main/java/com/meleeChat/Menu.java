@@ -47,4 +47,7 @@ public class Menu extends AppCompatActivity{
         b = getIntent().getExtras(); //get lat an lon to pass to other activities
 
     }
+    @Override
+    public void onBackPressed() {
+    }
 }

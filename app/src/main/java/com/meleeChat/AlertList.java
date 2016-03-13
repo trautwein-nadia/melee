@@ -177,9 +177,6 @@ public class AlertList extends AppCompatActivity {
                 tv.setText(w.tag);
                 //tv.setGravity(5); //align right
                 //tv2.setGravity(3); //align left
-
-
-
             return newView;
         }//end getView
 

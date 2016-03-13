@@ -95,7 +95,10 @@ public class MainActivity extends AppCompatActivity {
         catch (SecurityException e) {
 
         }
-
+        Button t = (Button) findViewById(R.id.toLogin);
+        Button p = (Button) findViewById(R.id.playerLogin);
+        t.setEnabled(false);
+        p.setEnabled(false);
         super.onResume();
     }
 
