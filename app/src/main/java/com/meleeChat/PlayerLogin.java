@@ -56,11 +56,10 @@ public class PlayerLogin extends AppCompatActivity {
             //parse responses so that username isnt taken
             for (int i = (responses.size() - 1); i >= 0; i--) {
                 String tag = responses.get(i).nickname;
-                String message = responses.get(i).message;
-                char c = message.charAt(0);
+                String type = responses.get(i).messageId;
                 Log.i(LOG_TAG, "tag list: " + tag);
-                if (c == '!' && message.equals("!LOGIN!" + tag) && tag.equals(username)) {
-                    //show something saying username taken
+                if (type.equals("!LOGIN!") && tag.equals(username)) {
+                    //add message
                     Log.i(LOG_TAG, tag + " is already taken!");
                     return;
                 }
@@ -102,12 +101,8 @@ public class PlayerLogin extends AppCompatActivity {
 
         MessageService service = retrofit.create(MessageService.class);
 
-        SecureRandomString srs = new SecureRandomString();
-        String message_id = srs.nextString();
-
-        String message = "!LOGIN!" + username;
         Call<Messages> queryResponseCall =
-                service.post_Message(lat, lon, username, user_id, message, message_id);
+                service.post_Message(lat, lon, username, user_id, username, "!LOGIN!");
 
 
         //Call retrofit asynchronously
@@ -203,7 +198,7 @@ public class PlayerLogin extends AppCompatActivity {
 
 
 
-        Log.i(LOG_TAG, "LAT: " + lat + " LON: " + lon + "user_id: " + user_id);
+        Log.i(LOG_TAG, "LAT: " + lat + " LON: " + lon + " user_id: " + user_id);
     }
 
 }

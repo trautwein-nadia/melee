@@ -70,7 +70,6 @@ public class TOLogin extends AppCompatActivity {
             //get messages
             //parse
             //if domain dne then send message
-            domain = "!DOMAIN!" + domain;
             sendMessage(domain);
             Intent intent = new Intent(this, Menu.class);
 
@@ -101,12 +100,8 @@ public class TOLogin extends AppCompatActivity {
         MessageService service = retrofit.create(MessageService.class);
 
         if (!message.equals("")) {
-            SecureRandomString srs = new SecureRandomString();
-            String message_id = srs.nextString();
-
-            username = "!TO!" + username;
             Call<Messages> queryResponseCall =
-                    service.post_Message(lat, lon, username, user_id, message, message_id);
+                    service.post_Message(lat, lon, username, user_id, message, "!DOMAIN!");
 
 
             //Call retrofit asynchronously

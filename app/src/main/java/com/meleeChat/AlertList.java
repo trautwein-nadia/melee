@@ -109,8 +109,8 @@ public class AlertList extends AppCompatActivity {
 
         for (int i = (responses.size() - 1); i >= 0; i--) {
             String tag = responses.get(i).nickname;
-            char beg = tag.charAt(0);
-            if (!tag.equals(nickname) && beg != '!') {
+            String info = responses.get(i).messageId;
+            if (info.equals("!LOGIN!") && !tag.equals(nickname)) {
                 ListElement le = new ListElement(responses.get(i).message, tag, responses.get(i).userId);
                 myListView.setAdapter(aa);
                 aList.add(le);

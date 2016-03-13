@@ -35,8 +35,8 @@
         android:id="@+id/start_chat"
         android:enabled="true"
         android:text="@string/login"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="playerLogin" />
+        android:onClick="playerLogin"
+        android:layout_below="@+id/username"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
