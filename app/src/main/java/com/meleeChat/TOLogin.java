@@ -151,7 +151,7 @@ public class TOLogin extends AppCompatActivity {
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         user_id = settings.getString("user_id", user_id);
 
-        System.out.println("LAT: " + lat + " LON: " + lon + "user_id: " + user_id);
+        Log.i(LOG_TAG, "LAT: " + lat + " LON: " + lon + "user_id: " + user_id);
 
 
         //new Feedback().execute("https://api.challonge.com/v1/tournaments.json");
@@ -163,7 +163,7 @@ public class TOLogin extends AppCompatActivity {
         protected String doInBackground(String... urls) {
             HttpURLConnection urlConnection;
             String userpass = username + ":" + APIkey;
-            System.out.println("USERPASS: " + userpass);
+            Log.i(LOG_TAG, "USERPASS: " + userpass);
             String result = "";
             // do above Server call here
             try

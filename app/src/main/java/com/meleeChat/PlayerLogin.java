@@ -11,6 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.meleeChat.message.MessageService;
+import com.meleeChat.message.Messages;
+import com.meleeChat.message.SecureRandomString;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,15 +37,19 @@ import retrofit2.http.Query;
  * Created by nadia on 3/12/16.
  */
 public class PlayerLogin extends AppCompatActivity {
-    /*
-    private SharedPreferences settings;
-    private static final String LOG_TAG = "TO_LOGIN";
+    private static final String LOG_TAG = "PLAYER_LOGIN";
     private String user_id;
+    private float lat;
+    private float lon;
+    private SharedPreferences settings;
+    /*
+
+
+
     private String username;
     private String APIkey;
     private String domain;
-    private float lat;
-    private float lon;
+
 
     private boolean getLoginInfo() {
         EditText editText = (EditText) findViewById(R.id.username);
@@ -78,8 +86,9 @@ public class PlayerLogin extends AppCompatActivity {
         }
     }
 
+    */
 
-    public void sendMessage(String message) {
+    public void getMessages() {
         //Magic HTTP stuff
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -95,13 +104,12 @@ public class PlayerLogin extends AppCompatActivity {
 
         MessageService service = retrofit.create(MessageService.class);
 
-        if (!message.equals("")) {
             SecureRandomString srs = new SecureRandomString();
             String message_id = srs.nextString();
 
-            username = "!TO!" + username;
+            //username = "!TO!" + username;
             Call<Messages> queryResponseCall =
-                    service.post_Message(lat, lon, username, user_id, message, message_id);
+                    service.get_Messages(lat, lon, user_id);
 
 
             //Call retrofit asynchronously
@@ -109,8 +117,8 @@ public class PlayerLogin extends AppCompatActivity {
                 @Override
                 public void onResponse(Response<Messages> response) {
                     if ((response.body().result.equals("ok") && response.code() == 200)) {
-                    Log.i(LOG_TAG, "Code is: " + response.code());
-                    Log.i(LOG_TAG, "The result is: " + response.body().result);
+                        Log.i(LOG_TAG, "Code is: " + response.code());
+                        Log.i(LOG_TAG, "The result is: " + response.body().result);
                     }
                     else {
                         Log.i(LOG_TAG, "Code is: " + response.code());
@@ -124,10 +132,7 @@ public class PlayerLogin extends AppCompatActivity {
                     //toast error
                 }
             });
-        }
     }
-
-    */
     @Override
     protected void onResume() {
         getSupportActionBar().setTitle("Competitor Login");
@@ -141,14 +146,12 @@ public class PlayerLogin extends AppCompatActivity {
         setContentView(R.layout.activity_player_login);
 
         Bundle b = getIntent().getExtras();
-        /*
         lat = b.getFloat("LAT");
         lon = b.getFloat("LON");
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         user_id = settings.getString("user_id", user_id);
 
-        System.out.println("LAT: " + lat + " LON: " + lon + "user_id: " + user_id);
-        */
+        Log.i(LOG_TAG, "LAT: " + lat + " LON: " + lon + "user_id: " + user_id);
 
         //new Feedback().execute("https://api.challonge.com/v1/tournaments.json");
     }
@@ -160,7 +163,7 @@ public class PlayerLogin extends AppCompatActivity {
         protected String doInBackground(String... urls) {
             HttpURLConnection urlConnection;
             String userpass = username + ":" + APIkey;
-            System.out.println("USERPASS: " + userpass);
+            Log.i(LOG_TAG,"USERPASS: " + userpass);
             String result = "";
             // do above Server call here
             try

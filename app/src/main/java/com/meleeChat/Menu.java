@@ -3,10 +3,12 @@ package com.meleeChat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 
 public class Menu extends AppCompatActivity{
+    private static final String LOG_TAG = "MENU";
     Bundle b;
 
     @Override
@@ -30,11 +32,11 @@ public class Menu extends AppCompatActivity{
     }
 
     public void reportResultsButton(View v) {
-        System.out.println("NOTHINGGG");
+        Log.i(LOG_TAG, "NOTHINGGG");
     }
 
     public void displayInfoButton(View v) {
-        System.out.println("NOTHINGGG2");
+        Log.i(LOG_TAG, "NOTHINGGG2");
     }
 
     @Override

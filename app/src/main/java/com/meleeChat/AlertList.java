@@ -99,7 +99,7 @@ public class AlertList extends AppCompatActivity {
 
     //not sure if this is the correct place for this?//
     public void alert(View v) {
-        System.out.println("THIS CURRENTLY DOES NOTHING");
+        Log.i(LOG_TAG, "THIS CURRENTLY DOES NOTHING");
     }
 
     private void populateList() {
@@ -155,6 +155,7 @@ public class AlertList extends AppCompatActivity {
             context = _context;
             this.context = _context;
         }
+
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
