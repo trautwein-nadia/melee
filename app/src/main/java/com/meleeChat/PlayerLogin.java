@@ -2,18 +2,27 @@ package com.meleeChat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.meleeChat.data.Tournament;
 import com.meleeChat.message.MessageService;
 import com.meleeChat.message.Messages;
 import com.meleeChat.message.ResultList;
 import com.meleeChat.message.SecureRandomString;
+import com.meleeChat.data.GetBracket;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -32,7 +41,9 @@ public class PlayerLogin extends AppCompatActivity {
     private SharedPreferences settings;
     private List<ResultList> responses;
     private boolean allowed = false;
-
+    private List<String> domains;
+    private List<String> tournaments;
+    private ListView tournamentList;
     private String username;
 
 
@@ -85,7 +96,7 @@ public class PlayerLogin extends AppCompatActivity {
             for (int i = (responses.size() - 1); i >= 0; i--) {
                 String tag = responses.get(i).nickname;
                 String type = responses.get(i).messageId;
-                Log.i(LOG_TAG, "tag list: " + tag);
+                Log.i(LOG_TAG, "tag list: " + responses.get(i).message);
                 if (type.equals("!LOGIN!") && tag.equals(username)) {
                     //add message
                     Log.i(LOG_TAG, tag + " is already taken!");
@@ -224,8 +235,58 @@ public class PlayerLogin extends AppCompatActivity {
         user_id = settings.getString("user_id", user_id);
 
 
-
         Log.i(LOG_TAG, "LAT: " + lat + " LON: " + lon + " user_id: " + user_id);
+    }
+
+    public void getTournaments(View view) {
+        if (responses == null) {
+            return;
+            //add message
+        }
+        domains = new ArrayList<String>();
+        String domain;
+        AsyncTask asyncTask;
+        //parse responses so that username isnt taken
+        for (int i = (responses.size() - 1); i >= 0; i--) {
+            System.out.println("RESPONSES ARE: " + responses.get(0).message);
+            if (responses.get(i).message.contains("!DOMAIN!")) {
+                domain = responses.get(i).message.split("!DOMAIN!")[1];
+                if (!domains.contains(domain)){
+                    domains.add(domain);
+                    try {
+                        tournaments = new GetBracket().execute("FlyxNHAwJNMvcoibWQvxIp4jaFcu28tIgh0eUQak", domain).get();
+                        System.out.println(tournaments);
+                    }
+                    catch (java.util.concurrent.ExecutionException e) {
+                        tournaments = null;
+                    }
+                    catch (java.lang.InterruptedException e) {
+                        tournaments = null;
+                    }
+                    catch (java.lang.NullPointerException e) {
+                        // Nothing
+                    }
+                }
+            }
+        }
+        tournamentList = (ListView) findViewById(R.id.tournamentList);
+        if (tournaments != null) {
+            ArrayAdapter<String> adapter;
+            adapter=new ArrayAdapter<String>(this,
+                    R.layout.tournament_listview,
+                    R.id.textView5,
+                    tournaments);
+            tournamentList.setAdapter(adapter);
+        }
+        tournamentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView name = (TextView) findViewById(R.id.tournamentName);
+                TextView text = (TextView) tournamentList.getChildAt(position).findViewById(R.id.textView5);
+                name.setText(text.getText());
+            }
+        });
+
     }
 
 }

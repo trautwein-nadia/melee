@@ -6,6 +6,8 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
+
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.meleeChat.data.JSONAdapter;
 
 import java.io.BufferedInputStream;
@@ -16,18 +18,21 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Praneetha on 3/12/2016.
  */
-class GetBracket extends AsyncTask<String, Void, String> {
+public class GetBracket extends AsyncTask<String, Void, List<String>> {
     public static String output = "";
+    public String result;
     @Override
-    protected String doInBackground(String... urls) {
+    protected List<String> doInBackground(String... urls) {
         HttpURLConnection urlConnection;
         String apiKey = urls[0];
         String subdomain = urls[1];
-        String result = "";
+        result = "";
         // do above Server call here
         try
         {
@@ -52,9 +57,8 @@ class GetBracket extends AsyncTask<String, Void, String> {
 
             in.close();
             urlConnection.disconnect();
-            getTournamentJson(result);
 
-            return result;
+            return getTournamentJson(result);
         }
         catch (MalformedURLException e) {
             e.printStackTrace();
@@ -63,12 +67,13 @@ class GetBracket extends AsyncTask<String, Void, String> {
         {
             e.printStackTrace();
         }
-        return "some message";
+        return getTournamentJson(result);
     }
 
-    public Tournament getTournamentJson(String s) {
+
+    public List<String> getTournamentJson(String s) {
         output = "";
-        Tournament TournamentJson = new Tournament();
+        List<String> tournaments = new ArrayList<String>();
         try{
             JSONArray test = new JSONArray(s);
             for(int i=0; i < test.length(); i++){
@@ -77,7 +82,9 @@ class GetBracket extends AsyncTask<String, Void, String> {
                 JSONObject o1 = test.getJSONObject(i);
                 //JSONObject mainObject = new JSONObject(s);
                 JSONObject o2 = o1.getJSONObject("tournament");
+
                 tournamentName = o2.getString("name");
+                tournaments.add(tournamentName);
                 Log.i("Tournament name is: ", tournamentName);
                 output += tournamentName + "\n";
             }
@@ -86,6 +93,8 @@ class GetBracket extends AsyncTask<String, Void, String> {
             System.out.print("Could not parse");
         }
 
-        return TournamentJson;
+        Log.i("Tournaments are ", ""+tournaments);
+
+        return tournaments;
     }
 }

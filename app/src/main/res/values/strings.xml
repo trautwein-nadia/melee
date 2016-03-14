@@ -18,4 +18,7 @@
 
     <string name="tag">tag</string>
     <string name="alert">Alert</string>
+    <string name="getTournaments">Select Tournament</string>
+    <string name="tournamentName">tournament</string>
+    <string name="temp_tourn" />
 </resources>

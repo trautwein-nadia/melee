@@ -72,7 +72,7 @@ public class TOLogin extends AppCompatActivity {
             //get messages
             //parse
             //if domain dne then send message
-            sendMessage(domain);
+            sendMessage("!DOMAIN!"+domain);
             Intent intent = new Intent(this, Menu.class);
 
             Bundle b = new Bundle();
