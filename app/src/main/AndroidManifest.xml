@@ -28,11 +28,11 @@
         </activity>
         <activity android:name=".TOLogin"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustPan">
+            android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
         <activity android:name=".PlayerLogin"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustPan">
+            android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
         <activity android:name=".Menu"
             android:configChanges="keyboardHidden|orientation|screenSize"

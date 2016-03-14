@@ -31,7 +31,7 @@ public class PlayerLogin extends AppCompatActivity {
     private float lon;
     private SharedPreferences settings;
     private List<ResultList> responses;
-    private boolean taken = false;
+    private boolean allowed = false;
 
     private String username;
 
@@ -39,8 +39,10 @@ public class PlayerLogin extends AppCompatActivity {
     private boolean getLoginInfo() {
         EditText editText = (EditText) findViewById(R.id.username);
         username = editText.getText().toString();
+        SharedPreferences.Editor e = settings.edit();
+        e.putString("username", username);
+        e.commit();
 
-        //or do you bounds check with ""?
         if (username == null) {
             return false;
         }
@@ -48,7 +50,33 @@ public class PlayerLogin extends AppCompatActivity {
     }
 
     public void playerLogin(View v) {
-        if (getLoginInfo()) {
+        /* too burnt to fix this rn :c
+        username = settings.getString("username", null);
+        if (username != null) {
+            //parse responses so that username isnt taken
+            for (int i = (responses.size() - 1); i >= 0; i--) {
+                String tag = responses.get(i).nickname;
+                String type = responses.get(i).messageId;
+                String oldID = responses.get(i).userId;
+                Log.i(LOG_TAG, "tag list: " + tag);
+                if (type.equals("!LOGIN!") && tag.equals(username) && user_id.equals(oldID)) {
+                    //add message
+                    Log.i(LOG_TAG, tag + " is ALLOWED :3");
+                }
+            }
+            Log.i(LOG_TAG, "USERNAAAAAME: " + username);
+
+            Intent intent = new Intent(this, Menu.class);
+
+            Bundle b = new Bundle();
+            b.putFloat("LAT", lat);
+            b.putFloat("LON", lon);
+            intent.putExtras(b);
+
+            startActivity(intent);
+
+        }
+        else */if (getLoginInfo()) {
             if (responses == null) {
                 return;
                 //add message
@@ -67,8 +95,6 @@ public class PlayerLogin extends AppCompatActivity {
 
             postMessage();
 
-            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-            //username = settings.getString("username", null);
             SharedPreferences.Editor e = settings.edit();
             e.putString("username", username);
             e.commit();
@@ -175,6 +201,7 @@ public class PlayerLogin extends AppCompatActivity {
                     // Log error here since request failed
                     //toast error
                 }
+
             });
     }
     @Override

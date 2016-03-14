@@ -2,10 +2,12 @@ package com.meleeChat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 
 import android.util.Base64;
@@ -42,9 +44,9 @@ public class TOLogin extends AppCompatActivity {
     private SharedPreferences settings;
     private static final String LOG_TAG = "TO_LOGIN";
     private String user_id;
-    private String username;
-    private String APIkey;
-    private String domain;
+    private String username = "21Pretzels"; //hardcoded for our convenience and demonstration
+    private String APIkey = "FlyxNHAwJNMvcoibWQvxIp4jaFcu28tIgh0eUQak";
+    private String domain = "smashing121";
     private float lat;
     private float lon;
 
@@ -147,6 +149,10 @@ public class TOLogin extends AppCompatActivity {
         user_id = settings.getString("user_id", user_id);
 
         Log.i(LOG_TAG, "LAT: " + lat + " LON: " + lon + "user_id: " + user_id);
+
+        EditText e = (EditText) findViewById(R.id.key);
+        e.setTypeface(Typeface.DEFAULT);
+        e.setTransformationMethod(new PasswordTransformationMethod());
 
 
         //new Feedback().execute("https://api.challonge.com/v1/tournaments.json");

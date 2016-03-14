@@ -8,62 +8,30 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.meleeChat.MainActivity"
-    >
+    android:background="@color/lpurple">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/start_chat"
+        android:onClick="toLogin"
+        android:enabled="true"
+        android:text="@string/login"
+        android:background="@color/green"
+        android:layout_alignParentStart="false"
+        android:layout_marginBottom="50dp"
+        android:layout_alignParentBottom="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView1"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        android:text="@string/name_prompt"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/username"
-        android:text="21pretzels"
-        android:layout_below="@+id/textView1"
-        android:layout_alignLeft="@+id/key"
-        android:layout_alignStart="@+id/key" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/help_prompt"
         android:id="@+id/textView2"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        android:text="@string/api_prompt"
-        android:layout_marginTop="59dp"
-        android:layout_below="@+id/username"
-        android:layout_alignRight="@+id/textView3"
-        android:layout_alignEnd="@+id/textView3" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/key"
-        android:text="FlyxNHAwJNMvcoibWQvxIp4jaFcu28tIgh0eUQak"
-        android:layout_below="@+id/textView2"
-        android:layout_alignLeft="@+id/to_domain"
-        android:layout_alignStart="@+id/to_domain" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        android:text="@string/event_prompt"
-        android:layout_above="@+id/to_domain"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textColor="@color/silver"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -71,20 +39,57 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/to_domain"
-        android:text="smashing121"
+        android:hint="domain"
+        android:textColorHint="@color/silver"
+        android:textColor="@color/silver"
+        android:textSize="20sp"
+        android:backgroundTint="@color/silver"
         android:layout_above="@+id/start_chat"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="76dp" />
+        android:layout_marginBottom="35dp" />
 
-    <Button
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/start_chat"
-        android:onClick="toLogin"
-        android:enabled="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="28dp"
-        android:text="@string/login" />
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/key"
+        android:hint="API key"
+        android:textColorHint="@color/silver"
+        android:textColor="@color/silver"
+        android:backgroundTint="@color/silver"
+        android:layout_above="@+id/to_domain"
+        android:layout_alignLeft="@+id/to_domain"
+        android:layout_alignStart="@+id/to_domain"
+        android:layout_alignRight="@+id/to_domain"
+        android:layout_alignEnd="@+id/to_domain" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/username"
+        android:autoText="false"
+        android:hint="username"
+        android:textColor="@color/silver"
+        android:textColorHint="@color/silver"
+        android:textSize="20sp"
+        android:backgroundTint="@color/silver"
+        android:layout_above="@+id/key"
+        android:layout_alignLeft="@+id/key"
+        android:layout_alignStart="@+id/key" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/TO_prompt"
+        android:id="@+id/textView"
+        android:textColor="@color/silver"
+        android:layout_marginBottom="36dp"
+        android:layout_above="@+id/username"
+        android:layout_alignRight="@+id/username"
+        android:layout_alignEnd="@+id/username" />
 
 </RelativeLayout>

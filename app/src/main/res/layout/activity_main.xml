@@ -7,39 +7,43 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.meleeChat.MainActivity">
+    tools:context="com.meleeChat.MainActivity"
+    android:background="@color/lpurple">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="225dp"
         android:weightSum="1">
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:text="@string/setup"
             android:id="@+id/toLogin"
             android:onClick="TOLogin"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_weight=".5"
-            android:enabled="false" />
+            android:background="@color/green"
+            android:layout_marginTop="10dp" />
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:text="@string/guest"
             android:id="@+id/playerLogin"
             android:onClick="playerLogin"
-            android:layout_alignLeft="@+id/toLogin"
-            android:layout_alignStart="@+id/toLogin"
-            android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/toLogin"
-            android:layout_alignEnd="@+id/toLogin"
-            android:layout_weight=".5" />
+            android:background="@color/yellow"
+            android:layout_marginTop="10dp" />
+
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/location"
+        android:id="@+id/textView4"
+        android:textColor="@color/silver"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
