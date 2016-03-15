@@ -1,5 +1,8 @@
 package com.meleeChat;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -14,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.os.Vibrator;
 
 import com.meleeChat.data.Tournament;
 import com.meleeChat.message.MessageService;
@@ -45,6 +49,22 @@ public class PlayerLogin extends AppCompatActivity {
     private List<String> tournaments;
     private ListView tournamentList;
     private String username;
+    final Context context = this;
+
+
+    protected Vibrator vib;
+
+    protected void vibrateCheck() {
+        long timeNow = System.currentTimeMillis();
+        if (vib != null) {
+            long[] once = {0, 100};
+            long[] twice = {0, 100, 400, 100};
+            long[] thrice = {0, 100, 400, 100, 400, 100};
+            vib.vibrate(thrice, -1);
+            //vib.vibrate(twice, -1);
+            //vib.vibrate(once, -1);
+        }
+    }
 
 
     private boolean getLoginInfo() {
@@ -99,6 +119,38 @@ public class PlayerLogin extends AppCompatActivity {
                 Log.i(LOG_TAG, "tag list: " + responses.get(i).message);
                 if (type.equals("!LOGIN!") && tag.equals(username)) {
                     //add message
+                    vibrateCheck();
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            context);
+
+                    // set title
+                    alertDialogBuilder.setTitle("Tag already taken!");
+
+                    // set dialog message
+                    alertDialogBuilder
+                            .setMessage("Please enter a new Tag")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    // if this button is clicked, close
+                                    // current activity
+                                    dialog.cancel();
+                                }
+                            })
+                            .setNegativeButton("Fuck you",new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    // if this button is clicked, just close
+                                    // the dialog box and do nothing
+                                    dialog.cancel();
+                                }
+                            });
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    // show it
+                    alertDialog.show();
+
                     Log.i(LOG_TAG, tag + " is already taken!");
                     return;
                 }
@@ -227,7 +279,12 @@ public class PlayerLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_login);
+        vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
+        if (vib == null) {
+            Log.i(LOG_TAG, "Vibrator not detected");
+
+        }
         Bundle b = getIntent().getExtras();
         lat = b.getFloat("LAT");
         lon = b.getFloat("LON");
