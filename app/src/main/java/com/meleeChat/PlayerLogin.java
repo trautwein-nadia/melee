@@ -340,7 +340,7 @@ public class PlayerLogin extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView name = (TextView) findViewById(R.id.tournamentName);
-                TextView text = (TextView) tournamentList.getChildAt(position).findViewById(R.id.textView5);
+                TextView text = (TextView) tournamentList.getChildAt(position - tournamentList.getFirstVisiblePosition()).findViewById(R.id.textView5);
                 name.setText(text.getText());
             }
         });

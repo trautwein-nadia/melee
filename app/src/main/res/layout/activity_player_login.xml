@@ -44,7 +44,6 @@
         android:layout_below="@+id/username"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:editable="false"
         android:text="@string/tournamentName" />
 
     <TextView
@@ -73,7 +72,7 @@
         android:id="@+id/tournamentList"
         android:layout_below="@+id/tournamentButton"
         android:layout_alignRight="@+id/start_chat"
-        android:layout_alignEnd="@+id/start_chat" />
+        android:layout_above="@id/start_chat"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -83,9 +82,9 @@
         android:enabled="true"
         android:text="@string/login"
         android:background="@color/green"
-        android:layout_below="@+id/tournamentList"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="35dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
