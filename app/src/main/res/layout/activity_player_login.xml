@@ -31,7 +31,7 @@
         android:layout_alignParentRight="true"
         android:textColor="@color/silver" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
@@ -44,6 +44,7 @@
         android:layout_below="@+id/username"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:editable="false"
         android:text="@string/tournamentName" />
 
     <TextView

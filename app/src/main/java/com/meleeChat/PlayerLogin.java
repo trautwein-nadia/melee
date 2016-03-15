@@ -303,6 +303,7 @@ public class PlayerLogin extends AppCompatActivity {
         domains = new ArrayList<String>();
         String domain;
         AsyncTask asyncTask;
+        tournaments = new ArrayList<String>();
         //parse responses so that username isnt taken
         for (int i = (responses.size() - 1); i >= 0; i--) {
             System.out.println("RESPONSES ARE: " + responses.get(0).message);
@@ -311,7 +312,7 @@ public class PlayerLogin extends AppCompatActivity {
                 if (!domains.contains(domain)){
                     domains.add(domain);
                     try {
-                        tournaments = new GetBracket().execute("FlyxNHAwJNMvcoibWQvxIp4jaFcu28tIgh0eUQak", domain).get();
+                        tournaments.addAll(new GetBracket().execute("FlyxNHAwJNMvcoibWQvxIp4jaFcu28tIgh0eUQak", domain).get());
                         System.out.println(tournaments);
                     }
                     catch (java.util.concurrent.ExecutionException e) {
